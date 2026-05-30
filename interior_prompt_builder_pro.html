@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interior Prompt Builder Pro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+:root{
+  --bg:#0f0f0f;--bg2:#181818;--bg3:#202020;--bg4:#2a2a2a;--bg5:#323232;
+  --border:rgba(255,255,255,0.07);--b2:rgba(255,255,255,0.13);--b3:rgba(255,255,255,0.2);
+  --text:#f0ede8;--t2:rgba(240,237,232,0.52);--t3:rgba(240,237,232,0.28);
+  --acc:#c4a15a;--acc2:#dbb96e;--grn:#4a9a6a;--red:#c45a5a;--blue:#5a8ac4;--pur:#9a6ab4;
+  --r:10px;--r2:6px;--font:"Vazirmatn",sans-serif
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+.glow{position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse 900px 500px at 70% 0%,rgba(196,161,90,.06) 0%,transparent 70%),
+             radial-gradient(ellipse 700px 400px at 0% 100%,rgba(90,138,196,.04) 0%,transparent 70%)}
+.app{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 20px 60px}
+/* HEADER */
+.hd{display:flex;align-items:center;justify-content:space-between;padding:18px 0 16px;
+    border-bottom:.5px solid var(--border);margin-bottom:18px;flex-wrap:wrap;gap:10px}
+.brand-n{font-size:17px;font-weight:600}.brand-s{font-size:10px;color:var(--t3);margin-top:2px}
+.hd-r{display:flex;align-items:center;gap:6px}
+.nav{display:flex;gap:2px;background:var(--bg2);border:.5px solid var(--border);
+     border-radius:100px;padding:3px;flex-wrap:wrap}
+.nb{padding:6px 13px;font-size:11px;border:none;border-radius:100px;cursor:pointer;
+    font-family:var(--font);background:transparent;color:var(--t2);transition:all .17s;
+    display:flex;align-items:center;gap:4px;white-space:nowrap}
+.nb:hover{color:var(--text)}.nb.on{background:var(--bg4);color:var(--text)}
+.icon-btn{width:32px;height:32px;border-radius:var(--r2);border:.5px solid var(--border);
+  background:var(--bg2);color:var(--t3);cursor:pointer;display:flex;align-items:center;
+  justify-content:center;font-size:14px;transition:all .14s}
+.icon-btn:hover{color:var(--acc);border-color:rgba(196,161,90,.3)}
+.icon-btn.active-key{color:var(--grn);border-color:rgba(74,154,106,.3)}
+/* PANELS */
+.panel{display:none}.panel.on{display:block}
+/* BARS */
+.tbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px}
+.tlbl{font-size:11px;color:var(--t3)}.brow{display:flex;gap:5px}
+.sbar{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px}
+.scat{padding:5px 12px;font-size:11px;border:.5px solid var(--border);border-radius:100px;cursor:pointer;
+      font-family:var(--font);background:var(--bg2);color:var(--t2);transition:all .16s;
+      display:flex;align-items:center;gap:4px}
+.scat:hover{border-color:var(--b2);color:var(--text)}.scat.on{color:var(--text);border-color:var(--b2);background:var(--bg3)}
+.sc-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+/* BUTTONS */
+.btn{padding:7px 13px;font-size:11.5px;border:.5px solid var(--b2);border-radius:var(--r2);
+     cursor:pointer;font-family:var(--font);background:var(--bg3);color:var(--text);
+     display:inline-flex;align-items:center;gap:5px;transition:all .16s;white-space:nowrap}
+.btn:hover{border-color:rgba(196,161,90,.4);color:var(--acc)}.btn:active{transform:scale(.97)}
+.btn-g{background:var(--acc);color:#1a1200;border-color:var(--acc);font-weight:500}
+.btn-g:hover{background:var(--acc2);border-color:var(--acc2);color:#1a1200}
+.btn-sm{padding:5px 10px;font-size:11px}
+/* THEME GRID */
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(135px,1fr));gap:7px;margin-bottom:16px}
+.tc{border:.5px solid var(--border);border-radius:var(--r);padding:11px;cursor:pointer;
+    background:var(--bg2);transition:all .16s}
+.tc:hover{border-color:var(--b2);transform:translateY(-1px)}.tc.on{transform:translateY(-2px)}
+.sws{display:flex;gap:3px;margin-bottom:7px}.sw{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+.tn{font-size:11.5px;font-weight:500}.ts{font-size:9.5px;color:var(--t3);margin-top:2px;line-height:1.4}
+.ai-p{display:inline-block;font-size:9px;padding:1px 6px;border-radius:100px;
+      background:rgba(196,161,90,.1);color:var(--acc);border:.5px solid rgba(196,161,90,.2);margin-top:4px}
+.ex-p{display:inline-block;font-size:9px;padding:1px 6px;border-radius:100px;
+      background:rgba(154,106,180,.1);color:var(--pur);border:.5px solid rgba(154,106,180,.2);margin-top:4px}
+/* DETAIL */
+.det{border:.5px solid var(--border);border-radius:var(--r);overflow:hidden;background:var(--bg2)}
+.hbar{display:flex;height:5px}.hs{flex:1}
+.det-top{padding:14px 16px;border-bottom:.5px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.det-title{font-size:14px;font-weight:500}.det-sub{font-size:11px;color:var(--t2);margin-top:2px}
+.det-body{padding:14px 16px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.sec{background:var(--bg3);border:.5px solid var(--border);border-radius:var(--r2);padding:11px}
+.sl{font-size:9px;font-weight:600;color:var(--acc);letter-spacing:.8px;text-transform:uppercase;margin-bottom:7px}
+.fi{padding:5px 0;border-bottom:.5px solid var(--border)}
+.fi:last-child{border-bottom:none;padding-bottom:0}
+.fk{font-size:10px;color:var(--t3);margin-bottom:1px}.fv{font-size:11.5px;color:var(--text);line-height:1.5}
+.note-b{background:rgba(196,161,90,.06);border:.5px solid rgba(196,161,90,.18);
+  border-radius:var(--r2);padding:7px 11px;margin-bottom:11px;font-size:11px;
+  color:var(--acc);display:flex;align-items:center;gap:5px}
+.pal-row{display:flex;height:6px;border-radius:3px;overflow:hidden;margin-top:6px}
+.pp{flex:1}
+/* PROMPT */
+.pb{background:var(--bg3);border:.5px solid var(--border);border-radius:var(--r2);overflow:hidden}
+.ph{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;
+    border-bottom:.5px solid var(--border)}
+.lps{display:flex;gap:3px}
+.lp{padding:3px 9px;font-size:10px;border:.5px solid var(--border);border-radius:100px;
+    cursor:pointer;font-family:var(--font);background:transparent;color:var(--t2);transition:all .13s}
+.lp.on{background:var(--bg4);color:var(--text);border-color:var(--b2)}
+.ptxt-w{padding:11px;max-height:270px;overflow-y:auto}
+.ptxt-w::-webkit-scrollbar{width:3px}
+.ptxt-w::-webkit-scrollbar-thumb{background:var(--b2);border-radius:3px}
+.ptxt-w pre{font-size:10.5px;color:var(--text);white-space:pre-wrap;
+            font-family:"Courier New",monospace;line-height:1.75;direction:ltr;text-align:left}
+/* LIFE STAGE */
+.ls-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:8px;margin-bottom:18px}
+.lsc{border:.5px solid var(--border);border-radius:var(--r);padding:15px;
+     cursor:pointer;background:var(--bg2);transition:all .16s}
+.lsc:hover{border-color:var(--b2);transform:translateY(-1px)}.lsc.on{transform:translateY(-2px)}
+.lsc-icon{font-size:22px;margin-bottom:8px;display:block}
+.lsc-t{font-size:13px;font-weight:500}.lsc-a{font-size:10px;color:var(--t3);margin-top:2px}
+.lsc-d{font-size:11px;color:var(--t2);margin-top:5px;line-height:1.5}
+.ls-det{border:.5px solid var(--border);border-radius:var(--r);overflow:hidden;background:var(--bg2)}
+.ls-top{padding:15px 17px;border-bottom:.5px solid var(--border);background:var(--bg3)}
+.ls-h{font-size:15px;font-weight:500;display:flex;align-items:center;gap:8px}
+.ls-sub{font-size:11px;color:var(--t2);margin-top:4px}
+.pr-row{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
+.pr-tag{font-size:10px;padding:3px 9px;border-radius:100px;
+        background:rgba(196,161,90,.1);color:var(--acc);border:.5px solid rgba(196,161,90,.2)}
+.ls-body{padding:15px 17px}
+.tip-row{padding:5px 0;border-bottom:.5px solid var(--border);
+         display:flex;align-items:flex-start;gap:6px;font-size:11.5px;line-height:1.5}
+.tip-row:last-child{border-bottom:none;padding-bottom:0}
+.tip-ok{color:var(--grn);font-size:12px;flex-shrink:0;margin-top:1px}
+.tip-no{color:var(--red);font-size:12px;flex-shrink:0;margin-top:1px}
+.ex-sec{background:rgba(154,106,180,.05);border:.5px solid rgba(154,106,180,.18);
+        border-radius:var(--r2);padding:12px;margin:14px 0}
+.ex-label{font-size:10px;color:var(--pur);letter-spacing:.5px;margin-bottom:10px;
+          display:flex;align-items:center;gap:5px}
+.ex-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:6px}
+.ex-card{border:.5px solid rgba(154,106,180,.2);border-radius:var(--r2);padding:10px;
+         cursor:pointer;background:var(--bg3);transition:all .15s}
+.ex-card:hover{border-color:rgba(154,106,180,.4);transform:translateY(-1px)}
+.ex-sws{display:flex;gap:3px;margin-bottom:5px}.ex-sw{width:10px;height:10px;border-radius:50%}
+.ex-n{font-size:11px;font-weight:500}.ex-s{font-size:9px;color:var(--t3);margin-top:1px}
+.rec-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:6px;margin-bottom:14px}
+.rec-card{border:.5px solid var(--border);border-radius:var(--r2);padding:9px;cursor:pointer;background:var(--bg3);transition:all .15s}
+.rec-card:hover{border-color:var(--b2);transform:translateY(-1px)}
+.rec-label{font-size:10.5px;color:var(--t2);margin-bottom:10px;display:flex;align-items:center;gap:5px}
+/* API SETTINGS MODAL */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;
+  align-items:center;justify-content:center}
+.modal-bg.show{display:flex}
+.modal{background:var(--bg2);border:.5px solid var(--b3);border-radius:var(--r);
+  padding:22px;max-width:520px;width:92%;position:relative;max-height:90vh;overflow-y:auto}
+.modal-t{font-size:15px;font-weight:500;margin-bottom:4px}
+.modal-s{font-size:11.5px;color:var(--t2);margin-bottom:16px;line-height:1.5}
+.close-x{position:absolute;top:14px;left:14px;background:none;border:none;
+  color:var(--t3);cursor:pointer;font-size:18px;line-height:1}
+.close-x:hover{color:var(--text)}
+/* PROVIDER TABS */
+.ptabs{display:flex;gap:3px;flex-wrap:wrap;margin-bottom:14px;
+  background:var(--bg3);border-radius:var(--r2);padding:3px;border:.5px solid var(--border)}
+.ptab{padding:6px 12px;font-size:11px;border:none;border-radius:5px;cursor:pointer;
+  font-family:var(--font);background:transparent;color:var(--t2);transition:all .15s;flex:1;text-align:center}
+.ptab:hover{color:var(--text)}.ptab.on{background:var(--bg4);color:var(--text)}
+.pform{display:none}.pform.on{display:block}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:10.5px;color:var(--t3);margin-bottom:5px}
+.inp{width:100%;background:var(--bg3);border:.5px solid var(--b2);border-radius:var(--r2);
+  padding:7px 11px;font-size:12px;color:var(--text);font-family:var(--font);
+  outline:none;transition:border-color .15s}
+.inp:focus{border-color:rgba(196,161,90,.4)}
+.inp::placeholder{color:var(--t3)}
+select.inp{cursor:pointer}
+.api-status{display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:3px 9px;
+  border-radius:100px;margin-bottom:12px}
+.api-ok{background:rgba(74,154,106,.1);color:var(--grn);border:.5px solid rgba(74,154,106,.25)}
+.api-warn{background:rgba(196,161,90,.1);color:var(--acc);border:.5px solid rgba(196,161,90,.25)}
+.api-err{background:rgba(196,90,90,.1);color:var(--red);border:.5px solid rgba(196,90,90,.25)}
+/* API GUIDE TAB */
+.api-wrap{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.api-card{background:var(--bg2);border:.5px solid var(--border);border-radius:var(--r);padding:16px}
+.api-card-full{grid-column:1/-1}
+.api-t{font-size:13px;font-weight:500;margin-bottom:4px;display:flex;align-items:center;gap:7px}
+.api-s{font-size:11px;color:var(--t2);margin-bottom:10px;line-height:1.6}
+.status-ok{display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:3px 9px;
+           border-radius:100px;background:rgba(74,154,106,.1);color:var(--grn);border:.5px solid rgba(74,154,106,.25)}
+.status-info{display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:3px 9px;
+             border-radius:100px;background:rgba(90,138,196,.1);color:var(--blue);border:.5px solid rgba(90,138,196,.25)}
+.step{display:flex;gap:10px;padding:7px 0;border-bottom:.5px solid var(--border);align-items:flex-start}
+.step:last-child{border-bottom:none;padding-bottom:0}
+.step-n{width:22px;height:22px;border-radius:50%;background:var(--bg4);color:var(--acc);font-size:11px;
+        font-weight:600;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.step-t{font-size:12px;color:var(--text);line-height:1.5}
+.step-s{font-size:11px;color:var(--t2);margin-top:2px;line-height:1.5}
+.code-b{background:var(--bg);border:.5px solid var(--border);border-radius:var(--r2);
+        padding:10px 12px;margin-top:8px;font-size:10.5px;font-family:"Courier New",monospace;
+        color:var(--t2);direction:ltr;text-align:left;line-height:1.6;overflow-x:auto}
+.code-b span.k{color:#c792ea}.code-b span.s{color:#c3e88d}.code-b span.c{color:#546e7a}
+/* GENERATE */
+.gen-wrap{max-width:580px;display:flex;flex-direction:column;gap:11px}
+.gc{background:var(--bg2);border:.5px solid var(--border);border-radius:var(--r);padding:17px}
+.gc-t{font-size:13.5px;font-weight:500;margin-bottom:5px}
+.gc-s{font-size:11px;color:var(--t2);margin-bottom:12px;line-height:1.6}
+.ga{background:var(--bg3);border:.5px solid var(--border);border-radius:var(--r2);
+  padding:10px 12px;margin-bottom:11px}
+.ga-l{font-size:10px;color:var(--t3);margin-bottom:5px}
+.gta{width:100%;border:none;background:transparent;font-family:var(--font);
+  font-size:12px;color:var(--text);resize:none;outline:none;direction:rtl;line-height:1.7}
+.gta::placeholder{color:var(--t3)}
+.gen-f{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.gen-hint{font-size:11px;color:var(--t3)}
+.rc{background:var(--bg2);border:.5px solid var(--border);border-radius:var(--r);
+  padding:14px 17px;animation:fi .3s ease}
+.rc-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:6px}
+.rc-i{font-size:11px;color:var(--t2);line-height:1.9}.rc-i span{color:var(--text)}
+/* CHAT */
+.cmsgs{min-height:180px;max-height:380px;overflow-y:auto;
+  display:flex;flex-direction:column;gap:8px;padding-bottom:10px;margin-bottom:8px}
+.cmsgs::-webkit-scrollbar{width:3px}
+.cmsgs::-webkit-scrollbar-thumb{background:var(--b2);border-radius:3px}
+.msg{display:flex;gap:7px;align-items:flex-start}.msg.u{flex-direction:row-reverse}
+.av{width:28px;height:28px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:12px}
+.av.ai{background:rgba(196,161,90,.1);color:var(--acc);border:.5px solid rgba(196,161,90,.2)}
+.av.u{background:var(--bg4);color:var(--t2);border:.5px solid var(--border)}
+.bub{max-width:80%;padding:8px 12px;border-radius:var(--r);font-size:12px;
+  line-height:1.7;border:.5px solid var(--border)}
+.msg.ai .bub{background:var(--bg3)}.msg.u .bub{background:var(--bg4);border-color:var(--b2)}
+.ciw{display:flex;gap:7px;border:.5px solid var(--b2);border-radius:var(--r);
+  padding:3px 3px 3px 11px;background:var(--bg2);transition:border-color .17s;margin-top:2px}
+.ciw:focus-within{border-color:rgba(196,161,90,.35)}
+.cin{flex:1;border:none;background:transparent;font-family:var(--font);
+  font-size:12px;color:var(--text);direction:rtl;outline:none;padding:6px 0}
+.cin::placeholder{color:var(--t3)}
+.sb{width:32px;height:32px;border-radius:var(--r2);border:none;background:var(--acc);
+  color:#1a1200;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:13px;flex-shrink:0;transition:all .14s;align-self:center}
+.sb:hover{background:var(--acc2)}.sb:active{transform:scale(.95)}
+.chips{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px}
+.chip{font-size:10.5px;padding:4px 10px;border:.5px solid var(--border);
+  border-radius:100px;cursor:pointer;background:var(--bg2);color:var(--t2);
+  transition:all .13s;font-family:var(--font)}
+.chip:hover{border-color:rgba(196,161,90,.3);color:var(--acc)}
+/* EMPTY */
+.empty{text-align:center;padding:2.5rem 1rem;color:var(--t3);font-size:12px}
+.empty-i{font-size:26px;margin-bottom:7px;opacity:.35}
+/* ANIM */
+@keyframes fi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spin{animation:spin .7s linear infinite;display:inline-block}
+.dl{display:flex;gap:4px;align-items:center}
+.dl .d{width:5px;height:5px;border-radius:50%;background:var(--t3)}
+.dl .d:nth-child(1){animation:pu 1s .0s infinite}
+.dl .d:nth-child(2){animation:pu 1s .2s infinite}
+.dl .d:nth-child(3){animation:pu 1s .4s infinite}
+@keyframes pu{0%,100%{opacity:.3}50%{opacity:1}}
+.divider{height:.5px;background:var(--border);margin:12px 0}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-thumb{background:var(--b2);border-radius:4px}
+@media(max-width:620px){
+  .g2,.ls-g,.cost-grid,.api-wrap{grid-template-columns:1fr}
+  .app{padding:0 12px 40px}
+  .bub{max-width:90%}
+  .nav{border-radius:var(--r)}
+}
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<div class="app">
+
+<div class="hd">
+  <div>
+    <div class="brand-n">✦ Interior Prompt Builder Pro</div>
+    <div class="brand-s">۲۵+ تم · ۵ موقعیت زندگی · هوش مصنوعی چندگانه · پرامپت حرفه‌ای</div>
+  </div>
+  <div class="hd-r">
+    <span id="api-status" class="api-status api-warn" style="font-size:10.5px;cursor:pointer" onclick="openAPI()">
+      <i class="ti ti-alert-triangle"></i> API تنظیم نشده
+    </span>
+    <button class="icon-btn" id="keybtn" onclick="openAPI()" title="تنظیمات API هوش مصنوعی">
+      <i class="ti ti-settings"></i>
+    </button>
+    <nav class="nav">
+      <button class="nb on" id="n-lib" onclick="gT('lib',this)"><i class="ti ti-palette"></i> سبک‌ها</button>
+      <button class="nb" id="n-life" onclick="gT('life',this);renderLifeGrid()"><i class="ti ti-users"></i> موقعیت زندگی</button>
+      <button class="nb" id="n-gen" onclick="gT('gen',this)"><i class="ti ti-sparkles"></i> ساخت AI</button>
+      <button class="nb" id="n-chat" onclick="gT('chat',this)"><i class="ti ti-message-circle"></i> دستیار</button>
+      <button class="nb" id="n-api" onclick="gT('api',this)"><i class="ti ti-info-circle"></i> راهنما</button>
+    </nav>
+  </div>
+</div>
+
+<!-- API MODAL -->
+<div class="modal-bg" id="api-modal">
+  <div class="modal">
+    <button class="close-x" onclick="closeAPI()">×</button>
+    <div class="modal-t">⚙️ تنظیمات هوش مصنوعی</div>
+    <div class="modal-s">سرویس AI دلخواه را انتخاب کن — می‌توانی بین Anthropic، OpenAI، Gemini، Ollama یا هر سرویس سازگار دیگری سوئیچ کنی.</div>
+    <div class="ptabs">
+      <button class="ptab on" data-p="anthropic" onclick="setProvTab('anthropic')">🤖 Claude</button>
+      <button class="ptab" data-p="openai" onclick="setProvTab('openai')">🧠 GPT</button>
+      <button class="ptab" data-p="gemini" onclick="setProvTab('gemini')">💎 Gemini</button>
+      <button class="ptab" data-p="ollama" onclick="setProvTab('ollama')">🦙 Ollama</button>
+      <button class="ptab" data-p="custom" onclick="setProvTab('custom')">⚙️ سفارشی</button>
+    </div>
+    <!-- ANTHROPIC -->
+    <div class="pform on" id="pf-anthropic">
+      <div class="field" id="key-field-anthropic">
+        <label>API Key (sk-ant-...)</label>
+        <input class="inp" id="kinp-anthropic" type="password" placeholder="sk-ant-api03-...">
+      </div>
+      <div class="field" id="model-field-anthropic">
+        <label>مدل</label>
+        <select class="inp" id="msel-anthropic">
+          <option>claude-sonnet-4-20250514</option>
+          <option>claude-haiku-4-5-20251001</option>
+          <option>claude-opus-4-6</option>
+        </select>
+      </div>
+      <div style="font-size:10.5px;color:var(--t3);margin-bottom:10px">کلید از <strong>console.anthropic.com</strong> — هر درخواست ≈ $0.003</div>
+      <div style="display:flex;gap:7px;flex-wrap:wrap">
+        <button class="btn btn-g btn-sm" onclick="saveProvKey('anthropic')"><i class="ti ti-device-floppy"></i> ذخیره و فعال‌سازی</button>
+        <button class="btn btn-sm" id="test-btn-anthropic" onclick="testConn('anthropic')">تست اتصال</button>
+      </div>
+    </div>
+    <!-- OPENAI -->
+    <div class="pform" id="pf-openai">
+      <div class="field" id="key-field-openai">
+        <label>API Key (sk-...)</label>
+        <input class="inp" id="kinp-openai" type="password" placeholder="sk-...">
+      </div>
+      <div class="field" id="model-field-openai">
+        <label>مدل</label>
+        <select class="inp" id="msel-openai">
+          <option>gpt-4o</option><option>gpt-4o-mini</option><option>gpt-4-turbo</option><option>gpt-3.5-turbo</option>
+        </select>
+      </div>
+      <div style="font-size:10.5px;color:var(--t3);margin-bottom:10px">کلید از <strong>platform.openai.com</strong></div>
+      <div style="display:flex;gap:7px">
+        <button class="btn btn-g btn-sm" onclick="saveProvKey('openai')"><i class="ti ti-device-floppy"></i> ذخیره و فعال‌سازی</button>
+        <button class="btn btn-sm" id="test-btn-openai" onclick="testConn('openai')">تست اتصال</button>
+      </div>
+    </div>
+    <!-- GEMINI -->
+    <div class="pform" id="pf-gemini">
+      <div class="field" id="key-field-gemini">
+        <label>API Key (Google AI Studio)</label>
+        <input class="inp" id="kinp-gemini" type="password" placeholder="AIzaSy...">
+      </div>
+      <div class="field" id="model-field-gemini">
+        <label>مدل</label>
+        <select class="inp" id="msel-gemini">
+          <option>gemini-2.0-flash</option><option>gemini-1.5-flash</option><option>gemini-1.5-pro</option>
+        </select>
+      </div>
+      <div style="font-size:10.5px;color:var(--t3);margin-bottom:10px">کلید رایگان از <strong>aistudio.google.com</strong></div>
+      <div style="display:flex;gap:7px">
+        <button class="btn btn-g btn-sm" onclick="saveProvKey('gemini')"><i class="ti ti-device-floppy"></i> ذخیره و فعال‌سازی</button>
+        <button class="btn btn-sm" id="test-btn-gemini" onclick="testConn('gemini')">تست اتصال</button>
+      </div>
+    </div>
+    <!-- OLLAMA -->
+    <div class="pform" id="pf-ollama">
+      <div style="font-size:11.5px;color:var(--t2);margin-bottom:10px;line-height:1.6">Ollama به صورت محلی روی کامپیوتر شما اجرا می‌شود. نیازی به کلید API ندارد.</div>
+      <div class="field" id="model-field-ollama">
+        <label>مدل نصب‌شده</label>
+        <select class="inp" id="msel-ollama">
+          <option>llama3</option><option>mistral</option><option>phi3</option><option>qwen2</option><option>gemma2</option>
+        </select>
+      </div>
+      <div style="font-size:10.5px;color:var(--t3);margin-bottom:10px">ابتدا <strong>ollama.ai</strong> را نصب کن: <code style="color:var(--acc)">ollama run llama3</code></div>
+      <div style="display:flex;gap:7px">
+        <button class="btn btn-g btn-sm" onclick="saveProvKey('ollama')"><i class="ti ti-device-floppy"></i> ذخیره و فعال‌سازی</button>
+        <button class="btn btn-sm" id="test-btn-ollama" onclick="testConn('ollama')">تست اتصال</button>
+      </div>
+    </div>
+    <!-- CUSTOM -->
+    <div class="pform" id="pf-custom">
+      <div class="field">
+        <label>آدرس API (OpenAI-compatible)</label>
+        <input class="inp" id="curl-custom" type="text" placeholder="https://your-proxy.com/v1/chat/completions">
+      </div>
+      <div class="field">
+        <label>نام مدل</label>
+        <input class="inp" id="cmod-custom" type="text" placeholder="model-name">
+      </div>
+      <div class="field" id="key-field-custom">
+        <label>API Key (اختیاری)</label>
+        <input class="inp" id="kinp-custom" type="password" placeholder="کلید API">
+      </div>
+      <div style="font-size:10.5px;color:var(--t3);margin-bottom:10px">هر سرویس سازگار با OpenAI: Together AI، Groq، OpenRouter...</div>
+      <div style="display:flex;gap:7px">
+        <button class="btn btn-g btn-sm" onclick="saveProvKey('custom')"><i class="ti ti-device-floppy"></i> ذخیره و فعال‌سازی</button>
+        <button class="btn btn-sm" id="test-btn-custom" onclick="testConn('custom')">تست اتصال</button>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div style="font-size:11px;color:var(--t3)">⚠ کلیدها فقط در حافظه جلسه جاری ذخیره می‌شوند.</div>
+  </div>
+</div>
+
+<!-- LIBRARY -->
+<div class="panel on" id="tab-lib">
+  <div class="tbar">
+    <span class="tlbl" id="tlbl">انتخاب سبک</span>
+    <div class="brow">
+      <button class="btn" onclick="gT('gen',document.getElementById('n-gen'))"><i class="ti ti-sparkles"></i> تم AI جدید</button>
+      <button class="btn btn-g" onclick="rand()"><i class="ti ti-dice"></i> رندومایز</button>
+    </div>
+  </div>
+  <div class="sbar" id="sbar"></div>
+  <div class="tgrid" id="tgrid"></div>
+  <div id="det-w"><div class="empty"><div class="empty-i"><i class="ti ti-palette"></i></div>یک سبک و تم را انتخاب کن</div></div>
+</div>
+
+<!-- LIFE STAGE -->
+<div class="panel" id="tab-life">
+  <div class="tbar"><span class="tlbl">موقعیت زندگی — پیشنهاد اختصاصی برای هر خانواده</span></div>
+  <div class="ls-grid" id="ls-grid"></div>
+  <div id="ls-det-w"><div class="empty"><div class="empty-i"><i class="ti ti-users"></i></div>یک موقعیت زندگی انتخاب کن</div></div>
+</div>
+
+<!-- GENERATE -->
+<div class="panel" id="tab-gen">
+  <div class="gen-wrap">
+    <div class="gc">
+      <div class="gc-t">ساخت تم جدید با هوش مصنوعی</div>
+      <div class="gc-s">ایده‌ات را بنویس — AI یه تم کامل بالانس‌شده می‌سازد. سرویس AI از تنظیمات انتخاب می‌شود.</div>
+      <div class="ga">
+        <div class="ga-l">ایده / الهام (اختیاری)</div>
+        <textarea class="gta" id="gi" rows="3" placeholder="مثال: مدرن تاریک با مشکی و مس...&#10;مثال: Japandi با چوب و سفید...&#10;مثال: ماکسیمال رنگین‌کمان شرقی...&#10;یا خالی بگذار — AI خودش خلق می‌کند"></textarea>
+      </div>
+      <div class="gen-f">
+        <span class="gen-hint">تم به کتابخانه اضافه می‌شود</span>
+        <button class="btn btn-g" onclick="genT()" id="gbtn"><i class="ti ti-sparkles"></i> ساخت تم</button>
+      </div>
+    </div>
+    <div id="gout"></div>
+  </div>
+</div>
+
+<!-- CHAT -->
+<div class="panel" id="tab-chat">
+  <div class="cmsgs" id="cmsgs">
+    <div class="msg ai">
+      <div class="av ai"><i class="ti ti-sparkles"></i></div>
+      <div class="bub">سلام! دستیار طراحی داخلی هستم ✦<br>در ترکیب رنگ، انتخاب سبک، بالانس المان‌ها، و ساخت پرامپت برای Midjourney یا DALL·E کمکت می‌کنم.</div>
+    </div>
+  </div>
+  <div class="chips">
+    <button class="chip" onclick="askC(this)">ترکیب رنگ برای پذیرایی مدرن؟</button>
+    <button class="chip" onclick="askC(this)">تفاوت مینیمال و مدرن چیست؟</button>
+    <button class="chip" onclick="askC(this)">ماکسیمال بدون شلوغی چطور؟</button>
+    <button class="chip" onclick="askC(this)">بهترین سبک برای جهیزیه؟</button>
+    <button class="chip" onclick="askC(this)">نورپردازی سینمایی بالانس؟</button>
+    <button class="chip" onclick="askC(this)">ایرانی مدرن چه اجزایی داره؟</button>
+  </div>
+  <div class="ciw">
+    <input class="cin" id="cinp" placeholder="سوالت را بنویس... (Enter برای ارسال)"
+      onkeydown="if(event.key==='Enter'){event.preventDefault();sendC()}">
+    <button class="sb" onclick="sendC()"><i class="ti ti-send"></i></button>
+  </div>
+</div>
+
+<!-- API GUIDE -->
+<div class="panel" id="tab-api">
+  <div class="api-wrap">
+    <div class="api-card">
+      <div class="api-t"><i class="ti ti-circle-check" style="color:var(--grn)"></i> استفاده در Claude.ai</div>
+      <div class="api-s">اگر این برنامه را در Claude.ai باز کرده‌ای، هوش مصنوعی بدون هیچ تنظیمی کار می‌کند.</div>
+      <span class="status-ok"><i class="ti ti-check"></i> فعال — نیازی به تنظیم ندارد</span>
+    </div>
+    <div class="api-card">
+      <div class="api-t"><i class="ti ti-server" style="color:var(--blue)"></i> استفاده مستقل</div>
+      <div class="api-s">برای اجرای مستقل خارج از Claude.ai، کلید API را از تنظیمات وارد کن یا یک پروکسی بساز.</div>
+      <span class="status-info"><i class="ti ti-info-circle"></i> کلید از دکمه ⚙️ بالا وارد کن</span>
+    </div>
+    <div class="api-card api-card-full">
+      <div class="api-t"><i class="ti ti-brand-nodejs" style="color:var(--grn)"></i> پروکسی ساده — Node.js</div>
+      <div class="api-s">این کد را روی Vercel، Railway یا Render رایگان اجرا کن.</div>
+      <div class="code-b"><span class="c">// proxy.js</span>
+<span class="k">const</span> express = require(<span class="s">'express'</span>);
+<span class="k">const</span> app = express();
+app.use(express.json()); app.use(require(<span class="s">'cors'</span>)());
+app.post(<span class="s">'/api/chat'</span>, <span class="k">async</span> (req, res) => {
+  <span class="k">const</span> r = <span class="k">await</span> fetch(<span class="s">'https://api.anthropic.com/v1/messages'</span>, {
+    method: <span class="s">'POST'</span>,
+    headers: {<span class="s">'Content-Type'</span>:<span class="s">'application/json'</span>,
+      <span class="s">'x-api-key'</span>: process.env.ANTHROPIC_API_KEY,
+      <span class="s">'anthropic-version'</span>:<span class="s">'2023-06-01'</span>},
+    body: JSON.stringify(req.body)
+  });
+  res.json(<span class="k">await</span> r.json());
+});
+app.listen(3000);</div>
+    </div>
+    <div class="api-card">
+      <div class="api-t"><i class="ti ti-currency-dollar"></i> هزینه‌ها</div>
+      <div class="step"><div class="step-n">✦</div><div><div class="step-t">ساخت تم AI</div><div class="step-s">هر تم ≈ $0.003</div></div></div>
+      <div class="step"><div class="step-n">✦</div><div><div class="step-t">چت دستیار</div><div class="step-s">هر پیام ≈ $0.001–$0.005</div></div></div>
+      <div class="step"><div class="step-n">✦</div><div><div class="step-t">بودجه پیشنهادی</div><div class="step-s">$5 = چند صد درخواست</div></div></div>
+    </div>
+    <div class="api-card">
+      <div class="api-t"><i class="ti ti-brand-vercel"></i> استقرار رایگان Vercel</div>
+      <div class="step"><div class="step-n">1</div><div><div class="step-t">ساخت Repo در GitHub</div></div></div>
+      <div class="step"><div class="step-n">2</div><div><div class="step-t">اتصال به Vercel</div><div class="step-s">vercel.com → New Project → Import</div></div></div>
+      <div class="step"><div class="step-n">3</div><div><div class="step-t">تنظیم Environment Variable</div><div class="step-s"><code style="color:var(--acc)">ANTHROPIC_API_KEY</code></div></div></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /.app -->
+<script>
+/* ═══ MULTI-PROVIDER API ═══ */
+const AI_PROVIDERS={
+  anthropic:{
+    name:'Anthropic Claude',
+    url:'https://api.anthropic.com/v1/messages',
+    models:['claude-sonnet-4-20250514','claude-haiku-4-5-20251001','claude-opus-4-6'],
+    defaultModel:'claude-sonnet-4-20250514',
+    headers:(key)=>({'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01'}),
+    buildBody:(msgs,sys,model,max)=>({model,max_tokens:max,system:sys,messages:msgs}),
+    extract:(d)=>(d.content||[]).filter(x=>x.type==='text').map(x=>x.text).join('')||d.error?.message||'خطا'
+  },
+  openai:{
+    name:'OpenAI GPT',
+    url:'https://api.openai.com/v1/chat/completions',
+    models:['gpt-4o','gpt-4o-mini','gpt-4-turbo','gpt-3.5-turbo'],
+    defaultModel:'gpt-4o',
+    headers:(key)=>({'Content-Type':'application/json','Authorization':'Bearer '+key}),
+    buildBody:(msgs,sys,model,max)=>({model,max_tokens:max,messages:[{role:'system',content:sys},...msgs]}),
+    extract:(d)=>d.choices?.[0]?.message?.content||d.error?.message||'خطا'
+  },
+  gemini:{
+    name:'Google Gemini',
+    url:(model,key)=>`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`,
+    models:['gemini-2.0-flash','gemini-1.5-flash','gemini-1.5-pro'],
+    defaultModel:'gemini-2.0-flash',
+    headers:()=>({'Content-Type':'application/json'}),
+    buildBody:(msgs,sys,model,max)=>({
+      system_instruction:{parts:[{text:sys}]},
+      contents:msgs.map(m=>({role:m.role==='assistant'?'model':'user',parts:[{text:m.content}]})),
+      generationConfig:{maxOutputTokens:max}
+    }),
+    extract:(d)=>d.candidates?.[0]?.content?.parts?.[0]?.text||d.error?.message||'خطا'
+  },
+  ollama:{
+    name:'Ollama (محلی)',
+    url:'http://localhost:11434/api/chat',
+    models:['llama3','mistral','phi3','qwen2','gemma2'],
+    defaultModel:'llama3',
+    headers:()=>({'Content-Type':'application/json'}),
+    buildBody:(msgs,sys,model)=>({model,messages:[{role:'system',content:sys},...msgs],stream:false}),
+    extract:(d)=>d.message?.content||d.error||'خطا'
+  },
+  custom:{
+    name:'سرویس سفارشی',
+    url:'',
+    models:['custom-model'],
+    defaultModel:'custom-model',
+    headers:(key)=>({'Content-Type':'application/json','Authorization':'Bearer '+key}),
+    buildBody:(msgs,sys,model,max)=>({model,max_tokens:max,messages:[{role:'system',content:sys},...msgs]}),
+    extract:(d)=>d.choices?.[0]?.message?.content||d.content?.[0]?.text||d.error?.message||'خطا'
+  }
+};
+
+let AI_SETTINGS={
+  provider:'anthropic',
+  keys:{anthropic:'',openai:'',gemini:'',ollama:'',custom:''},
+  models:{anthropic:'claude-sonnet-4-20250514',openai:'gpt-4o',gemini:'gemini-2.0-flash',ollama:'llama3',custom:'custom-model'},
+  customUrl:'',customModelInput:''
+};
+
+async function callAI(messages,systemPrompt,maxTokens=800){
+  const p=AI_SETTINGS.provider;
+  const pConf=AI_PROVIDERS[p];
+  const key=AI_SETTINGS.keys[p]||'';
+  const model=AI_SETTINGS.models[p];
+  let url=typeof pConf.url==='function'?pConf.url(model,key):pConf.url;
+  if(p==='custom'&&AI_SETTINGS.customUrl) url=AI_SETTINGS.customUrl;
+  if(!url) throw new Error('URL تنظیم نشده');
+  const headers=pConf.headers(key);
+  const body=pConf.buildBody(messages,systemPrompt,model,maxTokens);
+  const r=await fetch(url,{method:'POST',headers,body:JSON.stringify(body)});
+  if(!r.ok){const e=await r.text();throw new Error('HTTP '+r.status+': '+e.slice(0,100));}
+  const d=await r.json();
+  return pConf.extract(d);
+}
+
+/* ═══ DATA ═══ */
+const CATS=[
+  {id:'modern', label:'مدرن',     icon:'ti-building-skyscraper',dot:'#6B8CAE'},
+  {id:'minimal',label:'مینیمال',  icon:'ti-square',              dot:'#B0A090'},
+  {id:'boho',   label:'بوهو',     icon:'ti-leaf',                dot:'#B5875A'},
+  {id:'rustic', label:'روستیک',   icon:'ti-trees',               dot:'#7A6048'},
+  {id:'luxury', label:'لاکچری',   icon:'ti-diamond',             dot:'#B8972E'},
+  {id:'nordic', label:'نوردیک',   icon:'ti-snowflake',           dot:'#8FAAB3'},
+  {id:'maximal',label:'ماکسیمال', icon:'ti-layers-intersect',    dot:'#8A5AC4'},
+  {id:'iranian',label:'ایرانی',   icon:'ti-building-arch',       dot:'#C4A84E'},
+  {id:'ai',     label:'AI ساخته', icon:'ti-sparkles',            dot:'#c4a15a'},
+];
+
+const THEMES=[
+/* MODERN */
+{id:'m1',cat:'modern',name:'مدرن خاکستری-طلا',sub:'Greige · Brass · Walnut',
+ sw:['#7A7A6E','#C4A84E','#E8E0D4','#4A4438'],a:'#C4A84E',
+ p:{s:'گرم خاکستری (greige)',sE:'warm greige',w:'گردویی تیره',wE:'dark walnut',
+    r:'فرش هندسی مدرن — خاکستری گرم با خطوط ساده',rE:'modern geometric rug warm gray clean line pattern',
+    c:'خاکستری دودی یک‌دست — ۲–۳ عدد',cE:'smoke gray solid 2–3 pieces',t:'کرم کتانی',tE:'linen cream'},
+ ac:{v:'گلدان دودی با شاخه پامپاس خشک',vE:'smoky glass vase dried pampas',
+     l:'آباژور مشکی با پایه برنجی',lE:'black shade brass base lamp',
+     bv:'گلدان سرامیک خاکستری با پوتوس',bvE:'gray ceramic Pothos'},
+ art:'۲ پرینت انتزاعی — قاب مشکی نازک',artE:'2 abstract prints thin black frame',
+ lt:{m:'گرم ملایم — نور طبیعی از پنجره',mE:'warm soft ambient gentle sidelight',w:'کرم لینن',wE:'linen cream curtains'},
+ note:'فضا ساده — یک گلدان، یک آباژور، دو تابلو'},
+{id:'m2',cat:'modern',name:'مدرن ناوی-سفید',sub:'Navy · White · Matte Black',
+ sw:['#1C2D4A','#FFFFFF','#2A2A2A','#C4A84E'],a:'#1C2D4A',
+ p:{s:'سفید مات',sE:'pure matte white',w:'مشکی مات',wE:'matte black',
+    r:'فرش ناوی — راه‌راه باریک آبی و سفید',rE:'modern navy thin stripe blue white',
+    c:'ناوی سرمه‌ای — ۲ عدد',cE:'deep navy solid 2 pieces',t:'خاکستری گرم',tE:'warm gray'},
+ ac:{v:'گلدان شیشه‌ای با گل سفید',vE:'tall glass vase white flowers',
+     l:'آباژور سفید — پایه مشکی',lE:'white shade matte black base',
+     bv:'گلدان مشکی با فیکوس',bvE:'matte black pot tall Ficus'},
+ art:'۲ عکس b&w — قاب مشکی',artE:'2 B&W photography thin black frame',
+ lt:{m:'نور سفید خنک روشن',mE:'cool bright modern daylight',w:'حریر سفید',wE:'long white sheer curtains'},
+ note:'یک گیاه، یک گلدان، نور تمیز'},
+{id:'m3',cat:'modern',name:'مدرن سبز زیتون',sub:'Olive · Cream · Light Oak',
+ sw:['#6B7C4A','#E8E0CC','#C8A96E','#3C3C30'],a:'#6B7C4A',
+ p:{s:'کرم گرم',sE:'warm cream',w:'بلوط روشن',wE:'natural light oak',
+    r:'فرش هندسی خاکی — کرم و سبز',rE:'earthy geometric cream olive pattern',
+    c:'سبز زیتونی — ۲–۳ عدد',cE:'matte olive green 2–3 pieces',t:'کرم شنی',tE:'sandy cream'},
+ ac:{v:'گلدان ترا کوتا با کالاتیا',vE:'terracotta pot Calathea',
+     l:'آباژور سبز — پایه بلوط',lE:'olive shade oak base lamp',
+     bv:'گلدان بتنی با درخت زیتون',bvE:'concrete pot indoor olive tree'},
+ art:'۲ پرینت گیاه‌شناسی — قاب بلوط',artE:'2 botanical prints light oak frame',
+ lt:{m:'نور طبیعی گرم روز',mE:'warm natural daylight soft glow',w:'کرم و سبز',wE:'cream earthy green curtains'},
+ note:'سه گیاه، یک گلدان، تابلو کم'},
+/* MINIMAL */
+{id:'mn1',cat:'minimal',name:'مینیمال سفید-کرم',sub:'White · Warm Cream · Oak',
+ sw:['#F5F0E8','#E8E0D0','#C4B898','#D4C8B0'],a:'#C4B898',
+ p:{s:'کرم خالص گرم',sE:'pure warm cream',w:'بلوط روشن',wE:'natural light oak',
+    r:'فرش بافت ساده — کرم یک‌دست',rE:'simple textured solid cream rug',
+    c:'کرم — بدون پترن — ۲ عدد',cE:'solid cream no pattern 2 pieces only',t:'نه',tE:'none'},
+ ac:{v:'یک شاخه گل در گلدان شیشه‌ای',vE:'single flower stem clear glass vase',
+     l:'آباژور کرم ساده',lE:'simple cream shade wood base lamp',
+     bv:'یک گیاه کوچک در گلدان سفید',bvE:'small plant white ceramic pot'},
+ art:'یک پرینت خطی ساده',artE:'one simple line art thin natural frame',
+ lt:{m:'نور طبیعی روز — روشن آرام',mE:'natural daylight clean and calm',w:'حریر سفید',wE:'white sheer curtains'},
+ note:'فضای خالی زیاد — کمترین اشیاء'},
+{id:'mn2',cat:'minimal',name:'مینیمال خاکستری سرد',sub:'Cool Gray · White · Steel',
+ sw:['#A0A8B0','#E8EAF0','#707880','#D0D4D8'],a:'#A0A8B0',
+ p:{s:'سفید ابری',sE:'cloudy off-white',w:'استیل مات',wE:'brushed steel or matte black',
+    r:'فرش بافت — خاکستری روشن',rE:'textured light gray solid rug',
+    c:'خاکستری روشن — ۲ عدد',cE:'light gray 2 pieces only',t:'نه',tE:'none'},
+ ac:{v:'گلدان سرامیک سفید با یک ساقه',vE:'white ceramic vase single green stem',
+     l:'آباژور کروی سفید',lE:'round white shade steel lamp',
+     bv:'یک ساکولنت در گلدان هندسی',bvE:'succulent small geometric pot'},
+ art:'یک پرینت انتزاعی مینیمال',artE:'one minimal abstract gray white print',
+ lt:{m:'نور سفید سرد — تمیز',mE:'cool white daylight clean shadowless',w:'سفید بلند',wE:'long simple white curtains'},
+ note:'حداقل ممکن — هیچ تزئین اضافه'},
+{id:'mn3',cat:'minimal',name:'وابی‌ساب ژاپنی',sub:'Wabi-Sabi · Earth · Bamboo',
+ sw:['#B8A898','#8C7B68','#E0D4C4','#4A3C30'],a:'#8C7B68',
+ p:{s:'کرم گل‌گندمی',sE:'wheat cream',w:'چوب پیر روشن',wE:'aged light wood natural texture',
+    r:'فرش یوتا طبیعی — کرم خام',rE:'natural jute rug raw cream texture',
+    c:'کرم خاکی — ۲ عدد',cE:'earthy cream 2 pieces only',t:'کتان خاکی',tE:'raw linen'},
+ ac:{v:'گلدان سفالی دست‌ساز با گیاه خشک',vE:'handmade pottery dried grass',
+     l:'آباژور بامبو',lE:'bamboo paper shade lamp',
+     bv:'گلدان ناهموار با شاخه زیتون',bvE:'uneven ceramic pot olive branch'},
+ art:'یک اثر جوهر روی کاغذ',artE:'single ink artwork paper raw wood frame',
+ lt:{m:'نور ملایم طبیعی',mE:'gentle natural soft organic shadows',w:'کنفی خام',wE:'raw linen curtains'},
+ note:'ناقص‌بودن زیبایی داره — فقط چند شیء با معنی'},
+/* BOHO */
+{id:'b1',cat:'boho',name:'بوهو گرم ترا کوتا',sub:'Terracotta · Rust · Sage',
+ sw:['#C4704A','#8B5A3C','#7A9060','#E8C898'],a:'#C4704A',
+ p:{s:'کرم گرم طبیعی',sE:'warm natural cream',w:'تیک رنگ‌شده',wE:'stained teak',
+    r:'فرش دستباف بوهو — ترا کوتا و خاکی',rE:'handwoven bohemian terracotta earthy rust sage',
+    c:'ترا کوتا و خردلی — ۳–۴ عدد',cE:'terracotta mustard geometric 3–4 pieces',t:'زنگار درشت',tE:'rust chunky knit'},
+ ac:{v:'گلدان ترا کوتا با گل صورتی',vE:'terracotta vase pink dried pampas',
+     l:'آباژور رتان',lE:'rattan shade warm lamp',bv:'سبد رتان با نخل',bvE:'rattan basket Areca palm'},
+ art:'۲ پرینت طبیعت — قاب چوب',artE:'2 nature prints wood frame',
+ lt:{m:'نور عصرگاهی گرم',mE:'warm evening amber cozy glow',w:'کرم و ترا کوتا',wE:'terracotta blend curtains'},
+ note:'ترکیب گرم — نه بیش از ۴ تن رنگ'},
+{id:'b2',cat:'boho',name:'بوهو مدیترانه‌ای',sub:'Cobalt · White · Sand',
+ sw:['#2A5AA0','#F0EDE0','#E8C878','#A08050'],a:'#2A5AA0',
+ p:{s:'سفید شنی',sE:'sandy white',w:'بلوط رنگ‌پریده',wE:'bleached light wood',
+    r:'فرش دستباف — آبی کبالت و سفید',rE:'handwoven cobalt white tribal motif',
+    c:'آبی و خردلی — ۳ عدد',cE:'cobalt blue mustard 3 pieces',t:'سفید شنی',tE:'sandy white'},
+ ac:{v:'گلدان سرامیک آبی با گل صورتی',vE:'cobalt ceramic pink flowers',
+     l:'حریر سفید با حصیر',lE:'white shade rattan lamp',bv:'گلدان سفید با نخل آرکا',bvE:'white pot Areca palm'},
+ art:'۲ پرینت ساحلی',artE:'2 coastal prints natural frame',
+ lt:{m:'نور روشن مدیترانه‌ای',mE:'bright Mediterranean open light',w:'حریر سفید با حاشیه آبی',wE:'white sheer cobalt trim'},
+ note:'فضای باز روشن — نه شلوغ'},
+{id:'b3',cat:'boho',name:'بوهو بنفش-رز',sub:'Mauve · Dusty Rose · Ecru',
+ sw:['#9A6878','#D4A8B0','#E8DDD0','#6A4858'],a:'#9A6878',
+ p:{s:'عاجی خاک‌آلود',sE:'dusty ecru',w:'چوب رنگ‌پریده',wE:'whitewashed light wood',
+    r:'فرش بوهو نرم — رز و مرو',rE:'soft boho dusty rose warm mauve blend',
+    c:'مرو و رز — ۳ عدد',cE:'mauve dusty rose floral 3 pieces',t:'رز گرد',tE:'dusty rose linen'},
+ ac:{v:'گلدان رز با گل صورتی',vE:'dusty rose ceramic pink roses',
+     l:'آباژور قارچی کرم',lE:'mushroom cream shade lamp',bv:'سبد با پوتوس',bvE:'rattan trailing Pothos'},
+ art:'۲ پرینت آرت نووو — قاب سفید',artE:'2 art nouveau botanical white frame',
+ lt:{m:'نور رمانتیک گرم',mE:'warm romantic rose glow',w:'رز گرد حریر',wE:'dusty rose sheer curtains'},
+ note:'رمانتیک ولی ساده'},
+/* RUSTIC */
+{id:'r1',cat:'rustic',name:'روستیک قهوه‌ای گرم',sub:'Brown · Cream · Brick',
+ sw:['#8B5E3C','#E8D4B8','#C47848','#4A3228'],a:'#8B5E3C',
+ p:{s:'کرم عاجی گرم',sE:'warm ivory cream',w:'چوب پیر تیره',wE:'rough aged dark wood',
+    r:'فرش پشمی دستباف — قهوه‌ای و کرم',rE:'handwoven wool brown cream rustic geometric',
+    c:'قهوه‌ای و کرم — ۳ عدد',cE:'warm brown cream solid 3 pieces',t:'پشم قهوه‌ای',tE:'chunky brown wool'},
+ ac:{v:'گلدان سفالی با گل خشک',vE:'earthy pottery dried wildflowers',
+     l:'آباژور کتان — پایه چوب',lE:'natural linen shade aged wood lamp',bv:'گلدان سفالی با فیکوس',bvE:'rough pottery Ficus'},
+ art:'۲ تابلوی روستایی — قاب ضخیم',artE:'2 farmhouse prints thick wood frame',
+ lt:{m:'نور آمبر شمع‌مانند',mE:'warm candlelight amber glow',w:'کنف و کتان',wE:'burlap linen curtains'},
+ note:'بافت مهمه — نه رنگ اضافه'},
+{id:'r2',cat:'rustic',name:'روستیک سفید دهکده',sub:'Farmhouse · Sage · Linen',
+ sw:['#F0ECE4','#8A9E7A','#C4B4A0','#6A6458'],a:'#8A9E7A',
+ p:{s:'سفید دهکده',sE:'warm farmhouse white',w:'بلوط رنگ‌پریده',wE:'aged whitewash oak',
+    r:'فرش یوتا — کرم ساده',rE:'natural jute plain cream solid',
+    c:'سبز کبود و سفید — ۳ عدد',cE:'sage green white rustic 3 pieces',t:'سبز کبود',tE:'sage linen'},
+ ac:{v:'گلدان سفید با گل وحشی',vE:'white farmhouse vase wildflowers',
+     l:'آباژور سفید — آهن آنتیک',lE:'white shade iron arm lamp',bv:'سبد رتان با لاوندر',bvE:'wicker basket lavender'},
+ art:'یک آینه روستایی + یک تابلو',artE:'rustic mirror + farmhouse print',
+ lt:{m:'نور طبیعی گرم',mE:'warm natural farmhouse daylight',w:'سفید ساده',wE:'simple white cotton curtains'},
+ note:'آرام روشن — خاکی ولی تمیز'},
+/* LUXURY */
+{id:'l1',cat:'luxury',name:'لاکچری مشکی-طلا',sub:'Matte Black · Champagne Gold',
+ sw:['#1A1A1A','#C4A84E','#8B7A4A','#F0E8D8'],a:'#C4A84E',
+ p:{s:'کرم شامپاین',sE:'champagne cream',w:'ابنوس مشکی',wE:'matte black ebony',
+    r:'مخمل طلایی-مشکی هندسی',rE:'velvet pile black champagne gold geometric',
+    c:'مشکی و طلایی — ۳ عدد',cE:'black gold geometric 3 pieces',t:'مخمل مشکی',tE:'black velvet'},
+ ac:{v:'بلور طلایی با گل صورتی',vE:'gold crystal pink roses',
+     l:'مخمل مشکی — پایه طلا',lE:'black velvet shade gold column lamp',bv:'گلدان مشکی با نخل',bvE:'matte black pot palm'},
+ art:'۲ انتزاعی طلایی — قاب طلا',artE:'2 abstract gold prints thin gold frames',
+ lt:{m:'گرم لاکچری — اسپات طلایی',mE:'warm luxury golden spotlights',w:'مخمل مشکی — حاشیه طلا',wE:'black velvet gold trim'},
+ note:'تجمل در سادگی'},
+{id:'l2',cat:'luxury',name:'لاکچری کرم کامل',sub:'Ivory · Silk · Warm Gold',
+ sw:['#E8E0D0','#D4C8B0','#C0B090','#A89870'],a:'#C0B090',
+ p:{s:'کرم عاجی ابریشمی',sE:'silky ivory cream',w:'گردویی طبیعی',wE:'warm natural walnut',
+    r:'مخملی یک‌دست کرم',rE:'plush solid cream velvet rug',
+    c:'تمام کرم — ۳ عدد',cE:'all cream tone 3 pieces',t:'ابریشم کرم',tE:'cream silk throw'},
+ ac:{v:'بلور شفاف با رز کرم',vE:'crystal clear cream roses',
+     l:'کرم — پایه طلای مات',lE:'cream shade matte gold base lamp',bv:'مرمری سفید با اورکید',bvE:'white marble pot Orchid'},
+ art:'یک اثر کلاسیک — قاب طلایی',artE:'one classic artwork ornate gold frame',
+ lt:{m:'نور گرم لطیف',mE:'soft warm neutral calm luxury',w:'مخمل کرم',wE:'long cream velvet curtains'},
+ note:'یکپارچگی رنگی'},
+/* NORDIC */
+{id:'nd1',cat:'nordic',name:'نوردیک سفید-خاکستری',sub:'Arctic White · Cool Gray · Pine',
+ sw:['#F0EEE8','#A8B0B8','#7A8890','#D8D0C0'],a:'#A8B0B8',
+ p:{s:'سفید قطبی',sE:'warm arctic white',w:'کاج روشن',wE:'natural light pine',
+    r:'پشمی صاف — خاکستری روشن',rE:'flat wool light gray solid rug',
+    c:'خاکستری آبی — ۲–۳ عدد',cE:'soft blue-gray solid 2–3 pieces',t:'پشمی خاکستری',tE:'gray chunky wool'},
+ ac:{v:'سرامیک سفید با شاخه صنوبر',vE:'white ceramic pine branch',
+     l:'سفید ساده — پایه چوب',lE:'simple white shade pine wood',bv:'خاکستری با ساکولنت',bvE:'gray concrete succulent'},
+ art:'یک پوستر اسکاندیناوی',artE:'Scandinavian poster wooden frame',
+ lt:{m:'نور سفید خنک — شفاف',mE:'cool white daylight clear airy',w:'سفید سبک',wE:'long lightweight white curtains'},
+ note:'فضای زیاد — اشیاء کم'},
+{id:'nd2',cat:'nordic',name:'نوردیک گرم-توس',sub:'Birch · Mustard · Charcoal',
+ sw:['#D4B878','#3A3A38','#C8A060','#F0E8D8'],a:'#D4B878',
+ p:{s:'کرم گرم',sE:'warm cream',w:'توس روشن',wE:'light birch wood',
+    r:'پشمی بافت — خطوط ظریف کرم و خاکستری',rE:'textured wool fine cream charcoal stripe',
+    c:'خردلی و خاکستری — ۳ عدد',cE:'mustard charcoal solid 3 pieces',t:'خردلی پشمی',tE:'mustard wool'},
+ ac:{v:'توس با گیاه خشک',vE:'birch wood dried grass',
+     l:'خردلی — پایه توس',lE:'mustard shade birch lamp',bv:'سفید با توس داخلی',bvE:'white pot indoor birch'},
+ art:'یک پوستر هندسی نوردیک',artE:'Nordic geometric poster birch frame',
+ lt:{m:'نور گرم روز — دنج',mE:'warm daylight cozy hygge',w:'سفید با حاشیه خردلی',wE:'white mustard border'},
+ note:'هوگه — گرم ولی کم اشباع'},
+/* MAXIMALIST */
+{id:'mx1',cat:'maximal',name:'ماکسیمال ایتالیایی',sub:'Emerald · Burgundy · Gold',
+ sw:['#1A3A2A','#8B1A3A','#B8972E','#F5EDE0'],a:'#B8972E',
+ p:{s:'کرم عاجی تیره',sE:'deep ivory cream',w:'ابنوس تیره',wE:'dark ebony',
+    r:'قالی مخملی پرنقش — زمینه سبز تیره با ترنج طلایی',rE:'velvet richly patterned rug dark emerald gold medallion burgundy border',
+    c:'بوردو، طلایی، سبز — ۵–۶ عدد مختلف',cE:'burgundy gold emerald mix varied patterns 5–6 pieces',t:'بوردو مخمل — ریشه طلا',tE:'burgundy velvet gold fringe'},
+ ac:{v:'گلدان چینی اروپایی با رز صورتی',vE:'European porcelain vase pink roses',
+     l:'آباژور بوردو — پایه طلایی',lE:'burgundy shade antique gold lamp',bv:'گلدان چینی با درخت',bvE:'ornate porcelain topiary'},
+ art:'۳ نقاشی کلاسیک — قاب طلایی تزئینی',artE:'3 classical oil paintings ornate gold frames',
+ lt:{m:'نور درامتیک — اسپات روی تابلوها',mE:'dramatic strong spotlights on artwork',w:'مخمل سبز — کولن طلایی',wE:'emerald velvet heavy gold tassel'},
+ note:'ماکسیمال ولی از یک پالت — آشفتگی هدفمند'},
+{id:'mx2',cat:'maximal',name:'ماکسیمال اکلکتیک',sub:'Teal · Mustard · Rust · Plum',
+ sw:['#2A6B8A','#C47820','#B44030','#6A4080'],a:'#C47820',
+ p:{s:'مخمل سبز نفتی',sE:'teal velvet',w:'تیره ترکیبی',wE:'mixed dark wood',
+    r:'قالی رنگارنگ اکلکتیک — چند پترن',rE:'eclectic multicolor richly patterned mixed motifs',
+    c:'رنگ‌های مختلف — ۵ عدد',cE:'palette colors various patterns 5 pieces',t:'خردلی پرز',tE:'mustard textured velvet'},
+ ac:{v:'گلدان رنگارنگ دست‌ساز با گل صورتی',vE:'colorful handmade pottery pink flowers',
+     l:'آباژور زنگار — پایه مس',lE:'rust shade copper base lamp',bv:'گلدان آبی با موز زینتی',bvE:'large blue pot ornamental Banana'},
+ art:'۳–۴ تابلوی مختلف — gallery wall',artE:'3–4 mixed artwork gallery wall different frames',
+ lt:{m:'نور گرم لایه‌ای',mE:'warm layered lighting multiple sources',w:'پرده‌های ترکیبی',wE:'mixed textile eclectic curtains'},
+ note:'هر چیزی باید دلیل داشته باشه'},
+{id:'mx3',cat:'maximal',name:'ماکسیمال آرت دکو',sub:'Black · Gold · Emerald · Ivory',
+ sw:['#1A1A1A','#C4A84E','#1A4A30','#F5EDE0'],a:'#C4A84E',
+ p:{s:'مخمل سبز زمرد',sE:'emerald green velvet',w:'ابنوس — جزئیات طلایی',wE:'ebony with gold inlay',
+    r:'آرت دکو — خطوط هندسی طلایی روی مشکی',rE:'Art Deco bold geometric gold lines on black',
+    c:'مشکی، طلایی، زمرد — آرت دکو — ۴ عدد',cE:'black gold emerald Art Deco geometric 4 pieces',t:'طلایی — کناره ضخیم',tE:'gold heavy trim'},
+ ac:{v:'گلدان آرت دکو کریستال طلایی',vE:'Art Deco gold crystal pink flowers',
+     l:'آباژور مشکی هرمی — پایه طلایی',lE:'pyramid black shade tall gold base',bv:'گلدان مشکی با نخل پرطاووس',bvE:'matte black Bird of Paradise'},
+ art:'۳ پرینت آرت دکو — قاب طلایی هندسی',artE:'3 Art Deco prints geometric gold frames',
+ lt:{m:'نور تئاتری درامتیک',mE:'theatrical dramatic strong cinematic',w:'مخمل مشکی — جزئیات طلا',wE:'matte black velvet heavy gold curtains'},
+ note:'جلوه تئاتری — نور باید درامتیک باشه'},
+/* IRANIAN */
+{id:'ir1',cat:'iranian',name:'اصفهانی',sub:'فیروزه · طلایی · مینیاتور',
+ sw:['#4A90A4','#C9A84C','#F5F0E8','#8B5E3C'],a:'#C9A84C',
+ p:{s:'بژ عاجی گرم',sE:'warm ivory beige',w:'طلایی آنتیک',wE:'antique gold finish',
+    r:'قالی ترنج اصفهانی — لاجوردی با ختایی طلایی',rE:'Isfahan medallion rug lapis field golden Khatai motifs',
+    c:'فیروزه‌ای — بته‌جقه — ۳ عدد',cE:'turquoise Paisley 3 pieces',t:'لاجوردی',tE:'lapis blue throw'},
+ ac:{v:'گلدان مینا کاری آبی-طلا با گل صورتی',vE:'Isfahan Minakari blue-gold pink flowers',
+     l:'آباژور مسی قلمزنی',lE:'hammered copper engraved lamp',bv:'گلدان لعابدار آبی',bvE:'glazed blue Persian vase'},
+ art:'۲ مینیاتور ایرانی — قاب طلایی',artE:'2 Iranian miniature paintings antique gold frames',
+ lt:{m:'طلایی سینمایی گرم',mE:'warm cinematic golden ambiance',w:'لاجوردی با گلابتون',wE:'lapis curtains gold trim'},
+ note:'۲ مینیاتور، ۱ گلدان مینا، ۱ گیاه — بالانس'},
+{id:'ir2',cat:'iranian',name:'شیرازی',sub:'گلی · برنز · قلمکار',
+ sw:['#C2707A','#E8D5B0','#8B6914','#5C3D1E'],a:'#C2707A',
+ p:{s:'کرم گلبهی',sE:'blush cream',w:'گردویی تیره',wE:'dark walnut',
+    r:'قالی شیراز قبیله‌ای — قرمز گرم و گلی',rE:'Shiraz tribal rug warm rose red bold geometric',
+    c:'گلی — ترنج کوچک — ۳ عدد',cE:'rose-mauve medallion repeat 3 pieces',t:'مسی آنتیک',tE:'antique copper'},
+ ac:{v:'گلدان سفالی شیراز — گل صورتی',vE:'Shiraz pottery rose motifs pink flowers',
+     l:'آباژور برنزی — سایه‌بان کرم',lE:'matte bronze cream shade lamp',bv:'گلدان گلی با نخل',bvE:'rose pottery indoor palm'},
+ art:'۲ نقاشی باغ ایرانی — قاب گردویی',artE:'2 Persian garden paintings walnut frames',
+ lt:{m:'گرم صورتی ملایم',mE:'warm rosy soft Persian garden mood',w:'کرم-گلی حریر',wE:'cream rose silk curtains'},
+ note:'۲ تابلو باغ، ۱ گلدان سفالی، ۱ گیاه'},
+{id:'ir3',cat:'iranian',name:'تبریزی',sub:'قرمز عمیق · سرمه‌ای · ارسی',
+ sw:['#8B1A1A','#1A3A5C','#C9A84C','#F5F0E8'],a:'#8B1A1A',
+ p:{s:'کرم شتری',sE:'camel cream',w:'گردویی روشن',wE:'light walnut',
+    r:'قالی تبریز کلاسیک — لاکی با ترنج طلایی',rE:'Tabriz classic medallion lacquer red golden navy border',
+    c:'سرمه‌ای — بته‌جقه کرم — ۳ عدد',cE:'navy cream Paisley 3 pieces',t:'لاکی — ریشه طلایی',tE:'lacquer red gold fringe'},
+ ac:{v:'گلدان نقره‌کوبی آذری',vE:'Azerbaijani silver-inlaid pink flowers',
+     l:'آباژور مشکی — کریستال',lE:'black shade crystal bead lamp',bv:'گلدان لاکی با نخل',bvE:'lacquer gold glazed ornamental palm'},
+ art:'۲ فرش‌نگاری — قاب تیره',artE:'2 carpet-pattern Farsh-negari dark wood frames',
+ lt:{m:'نور غروب — قرمز-طلایی',mE:'warm sunset deep red golden',w:'سرمه‌ای — گیپور طلا',wE:'classic navy gold guipure'},
+ note:'۲ فرش‌نگاری، ۱ گلدان نقره، ۱ گیاه'},
+{id:'ir4',cat:'iranian',name:'تهران مدرن',sub:'خاکستری · طلا · ترمه',
+ sw:['#6B6B6B','#C9A84C','#8B4513','#E8E0D5'],a:'#C9A84C',
+ p:{s:'گرم خاکستری',sE:'warm greige',w:'مشکی مات',wE:'matte black',
+    r:'فرش هندسی مدرن ایرانی — خاکستری و طلایی',rE:'modern geometric Persian rug charcoal gold traditional border',
+    c:'خاکستری — هندسی اسلامی — ۳ عدد',cE:'smoke gray Islamic geometric 3 pieces',t:'ترمه طلایی',tE:'mustard gold Termeh'},
+ ac:{v:'بلور دودی — گل صورتی خشک',vE:'smoky crystal dried pink flowers',
+     l:'مدرن مشکی — پایه برنجی',lE:'modern black shade polished brass lamp',bv:'گلدان بتنی با فیلودندرون',bvE:'concrete pot Philodendron'},
+ art:'۲ هنر انتزاعی ایرانی معاصر',artE:'2 contemporary Iranian abstract Termeh palette',
+ lt:{m:'نور مدرن روز — گرمای ملایم',mE:'modern daylight subtle warm',w:'کتانی کرم',wE:'linen cream curtains'},
+ note:'ایرانی مدرن — عناصر اندک اما با هویت'},
+{id:'ir5',cat:'iranian',name:'یزدی',sub:'خاکی · مس · بادگیر',
+ sw:['#C4965A','#E8D5B0','#8B4513','#5C4033'],a:'#C4965A',
+ p:{s:'کرم خاکی گرم',sE:'warm sandy cream',w:'گردویی دودی',wE:'smoky walnut',
+    r:'زیلوی یزدی — هندسی آجری و کرم',rE:'Yazd Zilou flatweave terracotta cream brick geometric',
+    c:'آجری — هشت‌ضلعی — ۳ عدد',cE:'terracotta octagonal 3 pieces',t:'قهوه‌ای خرمایی',tE:'date-brown Termeh'},
+ ac:{v:'گلدان مسی کنده‌کاری — گل صورتی',vE:'Yazdi engraved copper pink flowers',
+     l:'مس‌کوبی — نور کهربایی',lE:'hammered copper amber lamp',bv:'سفالی با کاکتوس بزرگ',bvE:'large terracotta desert cactus'},
+ art:'۲ نقاشی بادگیر و گنبد یزد',artE:'2 Yazd dome Badgir windtower paintings',
+ lt:{m:'نور بیابانی گرم غروب',mE:'warm desert dusk amber sand',w:'خاکی کنفی حداقلی',wE:'minimal burlap curtains'},
+ note:'۲ تابلوی معماری، ۱ گلدان مسی، ۱ کاکتوس'},
+{id:'ir6',cat:'iranian',name:'کاشانی',sub:'رز · بورگوندی · تذهیب',
+ sw:['#9B3A4A','#E8C4C4','#C9A84C','#F5EDE0'],a:'#9B3A4A',
+ p:{s:'رز خاک‌آلود',sE:'dusty rose',w:'گردویی عمیق',wE:'deep walnut',
+    r:'قالی کاشان — بورگوندی با ترنج لاجوردی',rE:'Kashan rug burgundy field lapis medallion fine floral border',
+    c:'قرمز کهن — گل رز — ۳ عدد',cE:'antique red Persian rose floral 3 pieces',t:'طلایی-کرم ابریشم',tE:'gold-cream silk throw'},
+ ac:{v:'گلدان رز چینی با گل رز صورتی',vE:'Persian rose porcelain pink roses',
+     l:'بورگوندی — پایه طلایی',lE:'burgundy shade antique gold lamp',bv:'گلدان کرم-قرمز با اورکید',bvE:'cream-red pot rose orchid'},
+ art:'۲ تابلوی گل تذهیب — قاب طلایی',artE:'2 Tazhib floral illuminated prints gold frames',
+ lt:{m:'نور رمانتیک گرم رز',mE:'warm romantic rose ambiance',w:'بورگوندی مخمل — ریشه طلایی',wE:'burgundy velvet gold tassel'},
+ note:'۲ تذهیب، ۱ گلدان رز، ۱ گیاه'},
+];
+
+/* ═══ LIFE STAGES ═══ */
+const LIFE_STAGES=[
+  {id:'jahazieh',icon:'💍',title:'جهیزیه / زوج جوان',age:'۲۰–۳۵ سال',
+   desc:'اولین خانه مشترک — ترکیب گرمی، مهمان‌نوازی و کاربرد روزانه. سبک باید بادوام و مهمان‌پذیر باشد.',
+   priorities:['مهمان‌پذیر','گرم و دلنشین','بادوام','قابل توسعه'],
+   tips:['مبل راحت و بزرگ — مهمان زیاد داری','قالی با رنگ پوشاننده — پاک کردن راحت','رنگ‌های گرم و دلپذیر','میز چندمنظوره','نورپردازی ملایم گرم'],
+   avoid:['رنگ‌های خیلی روشن که کثیف می‌شوند','مبلمان شکننده','دکوراسیون خیلی شخصی'],
+   recommend:['m1','b1','nd2','ir4','mn1'],
+   prompt_note:'زوج جوان ایرانی — اولین خانه مشترک — فضای مهمان‌پذیر گرم'},
+  {id:'youngfam',icon:'👶',title:'خانواده با فرزند کوچک',age:'۲۵–۴۵ سال',
+   desc:'خانه باید هم زیبا باشد هم کاربردی. ایمنی و راحتی اولویت اول است.',
+   priorities:['ایمنی بچه','پاک‌کاری آسان','فضای بازی','راحتی عملی'],
+   tips:['پارچه مبل واترپروف یا قابل شستشو','فرش با رنگ متوسط','بدون گوشه‌های تیز','فضای کافی برای بازی','نور روشن روز'],
+   avoid:['مبلمان سفید یا کرم روشن','اشیاء شکستنی در ارتفاع پایین','قالی پرز بلند','تزئین اضافه'],
+   recommend:['m3','r2','nd1','b1','r1'],
+   prompt_note:'خانواده ایرانی با فرزند — فضای کاربردی و گرم — بچه‌پسند'},
+  {id:'midfam',icon:'🏡',title:'خانواده میانسال',age:'۴۰–۶۰ سال',
+   desc:'خانه باید نمایانگر شخصیت و پختگی باشد. کیفیت و هویت مهم‌تر از مد روز است.',
+   priorities:['کیفیت بالا','شخصیت و هویت','راحتی واقعی','تجمل متعادل'],
+   tips:['مبل با کیفیت بالا — سرمایه‌گذاری','قالی دستباف','ترکیب سنتی و مدرن','نورپردازی چندلایه','اکسسوری انتخابی'],
+   avoid:['سبک‌های خیلی مد روز','رنگ‌های خیلی تند','تزئینات بیش از حد'],
+   recommend:['l1','m1','ir1','ir3','mx3'],
+   prompt_note:'خانواده ایرانی میانسال — پختگی و کلاس — ترکیب سنتی-مدرن'},
+  {id:'seniorfam',icon:'🌿',title:'خانواده مسن / بازنشسته',age:'۶۰+ سال',
+   desc:'آرامش، راحتی و کاربرد مهم‌ترین اولویت‌هاست. نور کافی و دسترسی آسان.',
+   priorities:['راحتی جسمی','آرامش بصری','دسترسی آسان','نور کافی'],
+   tips:['مبل با ارتفاع مناسب — بلند شدن راحت','رنگ‌های آرام و گرم','نور روشن کافی','فرش پرز کم','مسیر راه‌رفتن باز'],
+   avoid:['رنگ‌های تیره','اشیاء زیاد روی زمین','فرش‌های لیز','نور کم'],
+   recommend:['l2','ir2','r2','nd2','mn1'],
+   prompt_note:'خانواده ایرانی مسن — آرامش و راحتی — نور کافی'},
+  {id:'bachelor',icon:'🏢',title:'مجردی / دانشجویی',age:'۲۰–۳۵ سال',
+   desc:'فضا اغلب کوچک‌تر است. باید هوشمندانه چیده شود — حداکثر کارایی.',
+   priorities:['بهینه فضا','شخصیت قوی','کاربرد دوگانه','اقتصادی'],
+   tips:['رنگ روشن — فضا را بزرگ نشان می‌دهد','مبلمان چندمنظوره','یک نقطه کانونی قوی','کمتر بهتر','شخصیت در جزئیات'],
+   avoid:['مبل بزرگ','رنگ‌های تیره در فضای کوچک','تزئینات زیاد'],
+   recommend:['mn1','mn2','nd1','m2','mx3'],
+   prompt_note:'آپارتمان مجردی — فضای هوشمند — شخصیت قوی'},
+];
+
+/* ═══ STATE ═══ */
+let aiTH=[],selId=null,curCat='modern',selLife=null,pLang='fa',chatH=[],chatL=false,genL=false;
+function allT(){return[...THEMES,...aiTH];}
+function catT(){return allT().filter(t=>t.cat===curCat);}
+
+/* ═══ TABS ═══ */
+function gT(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
+  document.getElementById('tab-'+id).classList.add('on');
+  btn.classList.add('on');
+}
+
+/* ═══ CATS ═══ */
+function renderCats(){
+  document.getElementById('sbar').innerHTML=CATS.map(c=>`
+    <button class="scat${c.id===curCat?' on':''}" onclick="setCat('${c.id}')">
+      <span class="sc-dot" style="background:${c.dot}"></span>
+      <i class="ti ${c.icon}" style="font-size:12px"></i>${c.label}
+    </button>`).join('');
+}
+function setCat(id){curCat=id;selId=null;renderCats();renderGrid();renderDet();}
+
+/* ═══ GRID ═══ */
+function renderGrid(){
+  const ts=curCat==='ai'?aiTH:catT();
+  document.getElementById('tlbl').textContent=ts.length+' تم موجود';
+  document.getElementById('tgrid').innerHTML=ts.length===0
+    ?'<div class="empty"><div class="empty-i"><i class="ti ti-sparkles"></i></div>هنوز تم AI نداری!</div>'
+    :ts.map(t=>`
+    <div class="tc${selId===t.id?' on':''}" onclick="sel('${t.id}')"
+      style="${selId===t.id?`border-color:${t.a}50;box-shadow:0 0 0 1.5px ${t.a}12 inset;`:''}">
+      <div class="sws">${t.sw.map(s=>`<div class="sw" style="background:${s}"></div>`).join('')}</div>
+      <div class="tn">${t.name}</div><div class="ts">${t.sub}</div>
+      ${t.ai?'<span class="ai-p">✦ AI</span>':''}</div>`).join('');
+}
+function sel(id){selId=id;renderGrid();renderDet();}
+function rand(){
+  const all=allT();const t=all[Math.floor(Math.random()*all.length)];
+  curCat=t.cat;selId=t.id;renderCats();renderGrid();renderDet();
+}
+
+/* ═══ DETAIL ═══ */
+function renderDet(){
+  const t=allT().find(x=>x.id===selId);
+  if(!t){document.getElementById('det-w').innerHTML='<div class="empty"><div class="empty-i"><i class="ti ti-palette"></i></div>یک تم انتخاب کن ↑</div>';return;}
+  document.getElementById('det-w').innerHTML=`
+  <div class="det" style="border-color:${t.a}28">
+    <div class="hbar">${t.sw.map(s=>`<div class="hs" style="background:${s}"></div>`).join('')}</div>
+    <div class="det-top">
+      <div><div class="det-title">${t.name}${t.ai?' <span class="ai-p">✦ AI</span>':''}</div>
+      <div class="det-sub">${t.sub}</div></div>
+    </div>
+    <div class="det-body">
+      ${t.note?`<div class="note-b"><i class="ti ti-scale"></i> ${t.note}</div>`:''}
+      <div class="g2">
+        <div class="sec"><div class="sl">مبلمان</div>
+          <div class="fi"><div class="fk">پارچه مبل</div><div class="fv">${t.p.s}</div></div>
+          <div class="fi"><div class="fk">چوب / پایه</div><div class="fv">${t.p.w}</div></div>
+          <div class="fi"><div class="fk">کوسن</div><div class="fv">${t.p.c}</div></div>
+          <div class="fi"><div class="fk">شال مبل</div><div class="fv">${t.p.t}</div></div>
+        </div>
+        <div class="sec"><div class="sl">اکسسوری بالانس</div>
+          <div class="fi"><div class="fk">گلدان میز</div><div class="fv">${t.ac.v}</div></div>
+          <div class="fi"><div class="fk">آباژور</div><div class="fv">${t.ac.l}</div></div>
+          <div class="fi"><div class="fk">گیاه / گلدان بزرگ</div><div class="fv">${t.ac.bv}</div></div>
+          <div class="fi"><div class="fk">تابلو / دیوار</div><div class="fv">${t.art}</div></div>
+        </div>
+        <div class="sec"><div class="sl">قالی / فرش</div>
+          <div class="fi"><div class="fv" style="font-size:11px;line-height:1.6">${t.p.r}</div></div>
+          <div class="pal-row">${t.sw.map(s=>`<div class="pp" style="background:${s}"></div>`).join('')}</div>
+        </div>
+        <div class="sec"><div class="sl">نور و پرده</div>
+          <div class="fi"><div class="fk">حال‌وهوا</div><div class="fv">${t.lt.m}</div></div>
+          <div class="fi"><div class="fk">پرده</div><div class="fv">${t.lt.w}</div></div>
+        </div>
+      </div>
+      <div class="pb">
+        <div class="ph">
+          <div class="lps">
+            <button class="lp${pLang==='fa'?' on':''}" onclick="setL('fa',this)">فارسی</button>
+            <button class="lp${pLang==='en'?' on':''}" onclick="setL('en',this)">English</button>
+          </div>
+          <button class="btn btn-sm" onclick="cpP()"><i class="ti ti-copy"></i> کپی</button>
+        </div>
+        <div class="ptxt-w"><pre id="ptxt">${buildP(t,pLang)}</pre></div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function setL(l,btn){
+  pLang=l;document.querySelectorAll('.lp').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
+  const el=document.getElementById('ptxt'),t=allT().find(x=>x.id===selId);
+  if(el&&t)el.textContent=buildP(t,l);
+}
+
+function buildP(t,l){
+  const pal=t.sw.join(' · ');
+  if(l==='fa')return`[PALETTE]\nرنگ‌ها: ${pal} | تأکید: ${t.a}\n\n[SCENE]\nسبک: ${t.name}\nآپارتمان بزرگ روشن — کف پارکت ${t.p.w}\nپنجره قدی با ${t.lt.w}\n\n━━━━━━━━━━━━\n\n[FURNITURE — بدون تغییر ساختار]\nپارچه: ${t.p.s} | چوب: ${t.p.w}\nکوسن: ${t.p.c}\n${t.p.t!=='نه'?'شال: '+t.p.t:''}\n\n[RUG] ${t.p.r}\n\n━━━━━━━━━━━━\n\n[ACCESSORIES — فقط همین — نه بیشتر]\nگلدان: ${t.ac.v}\nآباژور: ${t.ac.l}\nگیاه/گلدان بزرگ: ${t.ac.bv}\nدیوار: ${t.art}\n\n[LIGHTING] ${t.lt.m}\nنور سقف ملایم + یک اسپات سینمایی\n\n━━━━━━━━━━━━\n\n[CHARACTERS]\nزوج ایرانی روی مبل — خانم با حجاب\nیک کودک روی میز با اسباب‌بازی\n\n[COMPOSITION]\nتمام مبلمان در دید | حاشیه خالی محفوظ\nابعاد: ۱۳۵۰×۱۰۸۰ | افقی | فتورئالیستیک سینمایی`;
+  return`[PALETTE]\nColors: ${pal} | Accent: ${t.a}\n\n[SCENE]\nStyle: ${t.name} — ${t.sub}\nLarge bright apartment — ${t.p.wE} parquet\nFloor-to-ceiling window with ${t.lt.wE}\n\n━━━━━━━━━━━━\n\n[FURNITURE — DO NOT CHANGE STRUCTURE]\nFabric: ${t.p.sE} | Wood: ${t.p.wE}\nCushions: ${t.p.cE}\n${t.p.tE&&t.p.tE!=='none'?'Throw: '+t.p.tE:''}\n\n[RUG] ${t.p.rE}\n\n━━━━━━━━━━━━\n\n[ACCESSORIES — EXACTLY THIS — no more]\nVase: ${t.ac.vE}\nLamp: ${t.ac.lE}\nPlant/vase: ${t.ac.bvE}\nWall: ${t.artE}\n\n[LIGHTING] ${t.lt.mE}\nGentle ceiling + one cinematic spotlight\n\n━━━━━━━━━━━━\n\n[CHARACTERS]\nIranian couple on sofa — woman wearing hijab\nChild playing on coffee table\n\n[COMPOSITION]\nAll furniture visible | preserve empty margins\n1350×1080 px | landscape | photorealistic 8K cinematic`;
+}
+
+function cpP(){
+  const el=document.getElementById('ptxt');if(!el)return;
+  navigator.clipboard.writeText(el.textContent).then(()=>{
+    const b=document.querySelector('.ph .btn');
+    if(b){b.innerHTML='<i class="ti ti-check"></i> کپی شد!';setTimeout(()=>{b.innerHTML='<i class="ti ti-copy"></i> کپی';},2000);}
+  });
+}
+
+/* ═══ LIFE STAGE ═══ */
+function renderLifeGrid(){
+  document.getElementById('ls-grid').innerHTML=LIFE_STAGES.map(s=>`
+    <div class="lsc${selLife===s.id?' on':''}" onclick="selLS('${s.id}')"
+      style="${selLife===s.id?'border-color:var(--acc);background:var(--bg3);':''}">
+      <span class="lsc-icon">${s.icon}</span>
+      <div class="lsc-t">${s.title}</div>
+      <div class="lsc-a">${s.age}</div>
+      <div class="lsc-d">${s.desc.slice(0,60)}...</div>
+    </div>`).join('');
+}
+
+function selLS(id){
+  selLife=id;renderLifeGrid();
+  const s=LIFE_STAGES.find(x=>x.id===id);if(!s)return;
+  const recThemes=s.recommend.map(rid=>allT().find(t=>t.id===rid)).filter(Boolean);
+  document.getElementById('ls-det-w').innerHTML=`
+  <div class="ls-det">
+    <div class="ls-top">
+      <div class="ls-h">${s.icon} ${s.title}</div>
+      <div class="ls-sub">${s.age} — ${s.desc}</div>
+      <div class="pr-row">${s.priorities.map(p=>`<span class="pr-tag">${p}</span>`).join('')}</div>
+    </div>
+    <div class="ls-body">
+      <div class="g2">
+        <div class="sec"><div class="sl">✓ پیشنهادها</div>
+          ${s.tips.map(t=>`<div class="tip-row"><i class="ti ti-check tip-ok"></i><span>${t}</span></div>`).join('')}
+        </div>
+        <div class="sec"><div class="sl">✗ موارد احتیاط</div>
+          ${s.avoid.map(a=>`<div class="tip-row"><i class="ti ti-x tip-no"></i><span>${a}</span></div>`).join('')}
+        </div>
+      </div>
+      <div class="rec-label" style="margin-bottom:10px;margin-top:4px"><i class="ti ti-layout-grid" style="font-size:12px"></i> سبک‌های پیشنهادی برای این موقعیت</div>
+      <div class="rec-grid">
+        ${recThemes.map(t=>`
+          <div class="rec-card" onclick="goToTheme('${t.id}','${t.cat}')">
+            <div style="display:flex;gap:3px;margin-bottom:5px">${t.sw.map(s=>`<div style="width:10px;height:10px;border-radius:50%;background:${s}"></div>`).join('')}</div>
+            <div style="font-size:11px;font-weight:500">${t.name}</div>
+            <div style="font-size:9px;color:var(--t3);margin-top:1px">${t.sub}</div>
+          </div>`).join('')}
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">
+        <button class="btn btn-g btn-sm" onclick="copyLifePrompt('${s.id}')"><i class="ti ti-copy"></i> کپی پرامپت اختصاصی</button>
+        <span style="font-size:11px;color:var(--t3);align-self:center">بر اساس موقعیت ${s.title}</span>
+      </div>
+    </div>
+  </div>`;
+}
+
+function goToTheme(id,cat){
+  curCat=cat;selId=id;
+  gT('lib',document.getElementById('n-lib'));
+  renderCats();renderGrid();renderDet();
+  setTimeout(()=>document.getElementById('det-w')?.scrollIntoView({behavior:'smooth',block:'start'}),120);
+}
+
+function copyLifePrompt(sid){
+  const s=LIFE_STAGES.find(x=>x.id===sid);if(!s)return;
+  const recT=s.recommend.map(rid=>allT().find(t=>t.id===rid)).filter(Boolean)[0];
+  const base=recT?buildP(recT,pLang):'';
+  const note=pLang==='fa'
+    ?`\n\n[موقعیت زندگی]\n${s.title} — ${s.age}\n${s.prompt_note}\nاولویت: ${s.priorities.join('، ')}`
+    :`\n\n[LIFE STAGE]\n${s.title} — ${s.age}\n${s.prompt_note}`;
+  navigator.clipboard.writeText(base+note).then(()=>{
+    const b=document.querySelector('.ls-body .btn-g');
+    if(b){b.innerHTML='<i class="ti ti-check"></i> کپی شد!';setTimeout(()=>{b.innerHTML='<i class="ti ti-copy"></i> کپی پرامپت اختصاصی';},2000);}
+  });
+}
+
+/* ═══ AI GENERATE ═══ */
+async function genT(){
+  if(genL)return;genL=true;
+  const insp=document.getElementById('gi').value.trim();
+  const gbtn=document.getElementById('gbtn'),gout=document.getElementById('gout');
+  gbtn.innerHTML='<i class="ti ti-loader spin"></i> در حال ساخت...';gbtn.disabled=true;
+  gout.innerHTML='<div class="rc"><div class="dl"><div class="d"></div><div class="d"></div><div class="d"></div></div><div style="font-size:11px;color:var(--t3);margin-top:6px">هوش مصنوعی تم می‌سازد...</div></div>';
+  const prompt=`You are a professional interior designer. Create a unique interior design theme for an AI image prompt.
+${insp?`Inspiration: "${insp}"`:`Be inventive — any style: maximalist, Japandi, Art Deco, industrial, coastal, Mediterranean, etc.`}
+CRITICAL: Balanced, not overwhelming. Max: 1 vase, 1 lamp, 1 large plant, 2-3 art pieces, 2-4 cushions.
+RETURN ONLY raw JSON no markdown no backticks:
+{"name":"short Persian name","sub":"Color1 · Color2 · Style","sw":["#h1","#h2","#h3","#h4"],"a":"#accent","cat":"modern","p":{"s":"فارسی sofa","sE":"English sofa","w":"فارسی wood","wE":"English wood","r":"فارسی rug detail","rE":"English rug","c":"فارسی cushion+count","cE":"English cushion","t":"فارسی throw or نه","tE":"English throw or none"},"ac":{"v":"فارسی vase","vE":"English vase","l":"فارسی lamp","lE":"English lamp","bv":"فارسی plant","bvE":"English plant"},"art":"فارسی 2-3 art","artE":"English art","lt":{"m":"فارسی mood","mE":"English mood","w":"فارسی curtain","wE":"English curtain"},"note":"one balance sentence in Persian"}`;
+  try{
+    const txt=await callAI([{role:'user',content:prompt}],'You are a JSON generator. Return only valid JSON, no markdown.',900);
+    const clean=txt.replace(/```json|```/g,'').trim();
+    const th=JSON.parse(clean);
+    th.id='ai_'+Date.now();th.ai=1;
+    if(!th.sw||th.sw.length<4)th.sw=['#888','#aaa','#ccc','#eee'];
+    if(!th.a)th.a=th.sw[0];
+    aiTH.push(th);genL=false;
+    gbtn.innerHTML='<i class="ti ti-sparkles"></i> ساخت تم';gbtn.disabled=false;
+    gout.innerHTML=`<div class="rc" style="border-color:${th.a}35">
+      <div class="rc-h"><div>
+        <div style="font-size:13px;font-weight:500">${th.name} <span class="ai-p">✦ AI</span></div>
+        <div style="font-size:11px;color:var(--t2);margin-top:2px">${th.sub||''}</div>
+      </div>
+      <button class="btn btn-g btn-sm" onclick="viewAI('${th.id}')">مشاهده <i class="ti ti-arrow-left"></i></button>
+      </div>
+      <div style="display:flex;height:6px;border-radius:3px;overflow:hidden;margin-bottom:10px">${(th.sw||[]).map(s=>`<div style="flex:1;background:${s}"></div>`).join('')}</div>
+      <div class="rc-i"><span>قالی:</span> ${th.p?.r||'—'}<br><span>نور:</span> ${th.lt?.m||'—'}<br><span>بالانس:</span> ${th.note||'—'}</div>
+    </div>`;
+  }catch(e){
+    genL=false;gbtn.innerHTML='<i class="ti ti-sparkles"></i> ساخت تم';gbtn.disabled=false;
+    gout.innerHTML=`<div class="rc"><div style="color:#c55;font-size:12px">⚠ خطا: ${e.message} — دوباره تلاش کن</div></div>`;
+  }
+}
+function viewAI(id){curCat='ai';selId=id;gT('lib',document.getElementById('n-lib'));renderCats();renderGrid();renderDet();setTimeout(()=>document.getElementById('det-w')?.scrollIntoView({behavior:'smooth',block:'start'}),100);}
+
+/* ═══ CHAT ═══ */
+function askC(btn){document.getElementById('cinp').value=btn.textContent;sendC();}
+async function sendC(){
+  if(chatL)return;const inp=document.getElementById('cinp');
+  const msg=inp.value.trim();if(!msg)return;
+  inp.value='';chatH.push({role:'user',content:msg});renderC(true);chatL=true;
+  try{
+    const txt=await callAI(chatH,'متخصص طراحی داخلی هستی. به فارسی پاسخ بده. اصل مهم: بالانس — کمتر بهتره. تخصص: مدرن، مینیمال، بوهو، روستیک، لاکچری، نوردیک، ماکسیمال، ایرانی. ساخت پرامپت برای Midjourney/DALL-E. پاسخ کوتاه (۱۵۰ کلمه). عملی و کاربردی.',700);
+    chatH.push({role:'assistant',content:txt});
+  }catch(e){chatH.push({role:'assistant',content:'خطا: '+e.message});}
+  chatL=false;renderC(false);
+}
+function renderC(loading){
+  const box=document.getElementById('cmsgs');
+  const init='<div class="msg ai"><div class="av ai"><i class="ti ti-sparkles"></i></div><div class="bub">سلام! دستیار طراحی داخلی ✦ — در ترکیب رنگ، سبک و ساخت پرامپت برای Midjourney/DALL·E کمکت می‌کنم.</div></div>';
+  box.innerHTML=init+chatH.map(m=>`<div class="msg ${m.role==='user'?'u':'ai'}"><div class="av ${m.role==='user'?'u':'ai'}"><i class="ti ti-${m.role==='user'?'user':'sparkles'}"></i></div><div class="bub">${m.content.replace(/\n/g,'<br>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')}</div></div>`).join('');
+  if(loading)box.innerHTML+='<div class="msg ai"><div class="av ai"><i class="ti ti-sparkles"></i></div><div class="bub"><div class="dl"><div class="d"></div><div class="d"></div><div class="d"></div></div></div></div>';
+  box.scrollTop=box.scrollHeight;
+}
+
+/* ═══ API SETTINGS ═══ */
+let curProv='anthropic';
+function openAPI(){document.getElementById('api-modal').classList.add('show');}
+function closeAPI(){document.getElementById('api-modal').classList.remove('show');}
+function setProvTab(id){
+  curProv=id;
+  document.querySelectorAll('.ptab').forEach(b=>b.classList.remove('on'));
+  document.querySelector(`.ptab[data-p="${id}"]`).classList.add('on');
+  document.querySelectorAll('.pform').forEach(f=>f.classList.remove('on'));
+  document.getElementById('pf-'+id).classList.add('on');
+}
+function saveProvKey(id){
+  const inp=document.getElementById('kinp-'+id);
+  if(inp)AI_SETTINGS.keys[id]=inp.value.trim();
+  const mSel=document.getElementById('msel-'+id);
+  if(mSel)AI_SETTINGS.models[id]=mSel.value;
+  if(id==='custom'){
+    const urlInp=document.getElementById('curl-'+id);
+    if(urlInp)AI_SETTINGS.customUrl=urlInp.value.trim();
+    const cmi=document.getElementById('cmod-'+id);
+    if(cmi&&cmi.value.trim())AI_SETTINGS.models[id]=cmi.value.trim();
+  }
+  AI_SETTINGS.provider=id;
+  updateStatus();
+  const btn=document.getElementById('keybtn');
+  if(btn){btn.classList.add('active-key');btn.title=AI_PROVIDERS[id].name+' ✓';}
+  closeAPI();
+}
+async function testConn(id){
+  const sb=document.getElementById('test-btn-'+id);
+  sb.innerHTML='<i class="ti ti-loader spin"></i>';sb.disabled=true;
+  const prev=AI_SETTINGS.provider;
+  AI_SETTINGS.provider=id;
+  try{
+    const r=await callAI([{role:'user',content:'Say: OK'}],'Say only: OK',20);
+    sb.innerHTML=r.includes('OK')||r.length<30?'<i class="ti ti-check"></i> موفق':'<i class="ti ti-check"></i> پاسخ دریافت شد';
+    sb.style.color='var(--grn)';
+  }catch(e){
+    sb.innerHTML='<i class="ti ti-x"></i> خطا';
+    sb.style.color='var(--red)';
+    sb.title=e.message;
+  }
+  AI_SETTINGS.provider=prev;
+  sb.disabled=false;
+  setTimeout(()=>{sb.innerHTML='تست اتصال';sb.style.color='';sb.title='';},3000);
+}
+function updateStatus(){
+  const p=AI_SETTINGS.provider;
+  const hasKey=AI_SETTINGS.keys[p]||p==='ollama';
+  const st=document.getElementById('api-status');
+  st.className='api-status '+(hasKey?'api-ok':'api-warn');
+  st.innerHTML=hasKey
+    ?`<i class="ti ti-check"></i> ${AI_PROVIDERS[p].name} آماده`
+    :`<i class="ti ti-alert-triangle"></i> API تنظیم نشده`;
+}
+
+/* ═══ INIT ═══ */
+renderCats();renderGrid();renderLifeGrid();
+document.getElementById('api-modal').addEventListener('click',function(e){if(e.target===this)closeAPI();});
+</script>
+</body>
+</html>
